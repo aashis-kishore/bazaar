@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react'
 import threeBars from '@iconify/icons-codicon/three-bars'
 import accountIcon from '@iconify/icons-codicon/account'
 import useAuth, { AuthContext } from '../../hooks/useAuth'
+import useMenu from '../../hooks/useMenu'
 
 const Header = styled.header`
   display: flex;
@@ -38,6 +39,7 @@ interface LayoutCmpnt {
 const Layout: LayoutCmpnt = ({ children }) => {
   const LOGO_HEIGHT = 40
   const authManager = useAuth()
+  const { isMenuActive, setIsMenuActive } = useMenu()
 
   return (
     <AuthContext.Provider value={authManager}>
@@ -52,7 +54,11 @@ const Layout: LayoutCmpnt = ({ children }) => {
           authManager?.user &&
           <div>
             <Icon className="icon" icon={accountIcon} />
-            <Icon className="icon" icon={threeBars} />
+            <Icon
+              className="icon"
+              icon={threeBars}
+              onClick={() => setIsMenuActive(!isMenuActive)}
+            />
           </div>
         }
       </Header>
