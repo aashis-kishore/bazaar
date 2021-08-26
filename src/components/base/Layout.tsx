@@ -48,10 +48,13 @@ const Layout: LayoutCmpnt = ({ children }) => {
           width={LOGO_HEIGHT * 2.762711}
           height={LOGO_HEIGHT}
         />
-        <div>
-          <Icon className="icon" icon={accountIcon} />
-          <Icon className="icon" icon={threeBars} />
-        </div>
+        {
+          authManager?.user &&
+          <div>
+            <Icon className="icon" icon={accountIcon} />
+            <Icon className="icon" icon={threeBars} />
+          </div>
+        }
       </Header>
       {children}
       <Footer>
