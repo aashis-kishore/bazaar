@@ -4,15 +4,18 @@ import {
   Dispatch,
   SetStateAction,
   SyntheticEvent,
-  useEffect,
   useState,
-  useCallback
+  useCallback,
+  useContext
 } from 'react'
+import requests from '../libs/requests'
+import { AuthContext } from './useAuth'
 import { useRouter } from 'next/router'
 
 interface LoginFormState {
   email: string
   password: string
+  errMsg: string
 }
 
 type InitState = LoginFormState
@@ -24,10 +27,10 @@ interface HandleLoginFormSubmit {
 }
 
 interface UseLoginFormReturn {
-  loginFormState: LoginFormState,
-  setLoginFormState: Dispatch<SetStateAction<LoginFormState>>,
-  handleEmailChange: FieldChangeHandler,
-  handlePasswordChange: FieldChangeHandler,
+  loginFormState: LoginFormState
+  setLoginFormState: Dispatch<SetStateAction<LoginFormState>>
+  handleEmailChange: FieldChangeHandler
+  handlePasswordChange: FieldChangeHandler
   handleLoginFormSubmit: FormEventHandler<HTMLFormElement>
 }
 
@@ -41,11 +44,9 @@ const useLoginForm: UseLoginForm = (initState) => {
     setLoginFormState
   ] = useState<LoginFormState>(initState)
 
-  const router = useRouter()
+  const authManager = useContext(AuthContext)
 
-  useEffect(() => {
-    console.log('State change:', loginFormState)
-  }, [loginFormState])
+  const router = useRouter()
 
   const handleEmailChange: FieldChangeHandler = useCallback((event) => {
     const email = event.target.value
@@ -58,19 +59,23 @@ const useLoginForm: UseLoginForm = (initState) => {
   }, [loginFormState])
 
   const handleLoginFormSubmit: HandleLoginFormSubmit = useCallback(
-    async (event) => {
+    (event) => {
       event.preventDefault()
-      const res = await fetch('http://localhost:2020/users')
-      const data = await res.json()
-
-      console.log(data)
-
       const { email, password } = loginFormState
 
       if (email && password) {
-        return router.push('/admin/dashboard', undefined, { shallow: true })
+        requests.admin
+          .login(loginFormState)
+          .then((data) => {
+            // Persist data post reloads
+            localStorage.setItem('ws-user', JSON.stringify(data))
+            return data
+          })
+          .then((data) => authManager?.setUser(data))
+          .then(() => router.push('/admin/dashboard', undefined))
+          .catch((err) => console.log(err.response.data))
       }
-    }, [loginFormState, router])
+    }, [loginFormState, authManager, router])
 
   return {
     loginFormState,

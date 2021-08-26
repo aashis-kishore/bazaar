@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Dashboard from '../../components/admin/Dashboard'
 
 const DashboardPage: NextPage = () => {
-  const user = ''
-
   return (
     <>
       <Head>
@@ -12,11 +11,7 @@ const DashboardPage: NextPage = () => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      {user &&
-        <main>
-          <h1>Dashboard</h1>
-        </main>
-      }
+      <Dashboard />
     </>
   )
 }

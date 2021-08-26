@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import threeBars from '@iconify/icons-codicon/three-bars'
 import accountIcon from '@iconify/icons-codicon/account'
+import useAuth, { AuthContext } from '../../hooks/useAuth'
 
 const Header = styled.header`
   display: flex;
@@ -36,9 +37,10 @@ interface LayoutCmpnt {
 
 const Layout: LayoutCmpnt = ({ children }) => {
   const LOGO_HEIGHT = 40
+  const authManager = useAuth()
 
   return (
-    <>
+    <AuthContext.Provider value={authManager}>
       <Header>
         <Image
           src="/po-logo.png"
@@ -55,7 +57,7 @@ const Layout: LayoutCmpnt = ({ children }) => {
       <Footer>
         <p>&copy;2021 PegaOne</p>
       </Footer>
-    </>
+    </AuthContext.Provider>
   )
 }
 

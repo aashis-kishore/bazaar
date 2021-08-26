@@ -39,10 +39,11 @@ const LoginForm = () => {
     handleLoginFormSubmit,
     handleEmailChange,
     handlePasswordChange
-  } = useLoginForm({ email: '', password: '' })
+  } = useLoginForm({ email: '', password: '', errMsg: '' })
 
   return (
     <StyledForm onSubmit={handleLoginFormSubmit}>
+      <p>{loginFormState.errMsg}</p>
       <input
         type="email"
         name="email"
@@ -51,6 +52,7 @@ const LoginForm = () => {
         placeholder="email"
         value={loginFormState.email}
         onChange={handleEmailChange}
+        autoFocus={true}
       />
       <input
         type="password"
