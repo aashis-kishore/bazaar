@@ -13,11 +13,15 @@ const useMenu: UseMenu = (initState = false) => {
   const [isMenuActive, setIsMenuActive] = useState(initState)
 
   useEffect(() => {
-    const sidePane = document.querySelector('.side-pane')
+    const menuPane = document.querySelector('.menu-pane')
+    const mainPane = document.querySelector('.main-pane')
 
-    if (sidePane) {
-      isMenuActive && sidePane.classList.add('active')
-      !isMenuActive && sidePane.classList.remove('active')
+    if (menuPane && mainPane) {
+      isMenuActive && menuPane.classList.add('active')
+      !isMenuActive && menuPane.classList.remove('active')
+
+      isMenuActive && mainPane.classList.remove('active')
+      !isMenuActive && mainPane.classList.add('active')
     }
   })
 

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import threeBars from '@iconify/icons-codicon/three-bars'
+import close from '@iconify/icons-codicon/close'
 import accountIcon from '@iconify/icons-codicon/account'
 import useAuth, { AuthContext } from '../../hooks/useAuth'
 import useMenu from '../../hooks/useMenu'
@@ -56,7 +57,7 @@ const Layout: LayoutCmpnt = ({ children }) => {
             <Icon className="icon" icon={accountIcon} />
             <Icon
               className="icon"
-              icon={threeBars}
+              icon={isMenuActive ? close : threeBars}
               onClick={() => setIsMenuActive(!isMenuActive)}
             />
           </div>
